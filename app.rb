@@ -8,6 +8,11 @@ class Application < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  not_found do
+    status 404
+    return "Sorry! We couldn't find this post."
+  end
+
   get '/hello' do
     name = params[:name]
 
@@ -24,5 +29,10 @@ class Application < Sinatra::Base
     message = params[:message]
 
     return "Thanks #{name}, you sent this message: '#{message}'"
+  end
+
+  post '/sort-names' do
+    names = params[:names].split(',')
+    return names.sort.join(',')
   end
 end
