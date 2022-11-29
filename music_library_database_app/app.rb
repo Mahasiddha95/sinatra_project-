@@ -37,4 +37,28 @@ class Application < Sinatra::Base
     album = album_repo.find(id)
     return "id=#{album.id},title=#{album.title},release_year=#{album.release_year},artist_id=#{album.artist_id}"
   end
-end
+  
+  get '/artists' do 
+    repo = ArtistRepository.new 
+    artists = repo.all 
+    
+    result = artists.map do |artist|
+      artist.name 
+    end 
+   return result.join(', ')
+  end 
+
+  post '/artists' do
+    artist = Artist.new
+    artist.name = params[:name]
+    artist.genre = params[:genre]
+
+    artist_repo = ArtistRepository.new
+    artist_repo.create(artist)
+    
+    return ""
+  end
+end 
+
+
+
