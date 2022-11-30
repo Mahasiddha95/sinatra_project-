@@ -4,6 +4,8 @@ require "sinatra/reloader"
 require_relative 'lib/database_connection'
 require_relative 'lib/album_repository'
 require_relative 'lib/artist_repository'
+require_relative 'lib/album'
+require_relative 'lib/artist'
 
 DatabaseConnection.connect
 
@@ -31,41 +33,45 @@ class Application < Sinatra::Base
     return nil
   end
 
-  get '/albums/:id' do
-    id = params[:id].to_i
-    album_repo = AlbumRepository.new
-    album = album_repo.find(id)
-    return "id=#{album.id},title=#{album.title},release_year=#{album.release_year},artist_id=#{album.artist_id}"
-  end
+  
  
   get '/artists' do 
     repo = ArtistRepository.new 
-    artists = repo.all 
-    
-    result = artists.map do |artist|
-      artist.name 
-    end 
-   return result.join(', ')
+    @artist = repo.all
+    return erb(:artists) 
   end 
 
   post '/artists' do
+    artist_repo = ArtistRepository.new
     artist = Artist.new
     artist.name = params[:name]
     artist.genre = params[:genre]
 
-    artist_repo = ArtistRepository.new
     artist_repo.create(artist)
     
-    return ""
+    return nil
   end
 
-  get '/albums_id/:id' do 
+  get '/albums/:id' do 
     artist_repo = ArtistRepository.new 
     repo = AlbumRepository.new 
-    @album = repo.(params[:id]) 
+    @album = repo.find(params[:id]) 
     @artist = artist_repo.find(@album.artist_id) 
 
-   return erb(:album) 
+   return erb(:view_album) 
+  end 
+
+  get '/artists/:id' do 
+    artist_repo = ArtistRepository.new 
+    @artist = artist_repo.find(params[:id]) 
+    return erb(:view_artist) 
+  end 
+
+  get '/albums' do 
+    album_repo = AlbumRepository.new 
+    @albums = album_repo.all
+
+   return erb(:albums) 
   end 
 end 
  
