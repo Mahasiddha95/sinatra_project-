@@ -36,6 +36,7 @@ describe Application do
       expect(get_response.status).to eq 200
       expect(get_response.body).to eq "id=13,title=Voyage,release_year=2022,artist_id=2"
     end
+  end 
 
     context "GET /artists" do
       it 'returns 200 OK' do
@@ -51,6 +52,7 @@ describe Application do
         expect(response.status).to eq(404)
         expect(response.body).to eq("Sorry! We couldn't find this post.")
       end
+    end 
 
       context "POST /artists" do
         it 'returns 200 OK' do
@@ -66,6 +68,17 @@ describe Application do
           expect(get_response.body).to include("nothing")
         end
       end 
+
+      context "GET /albums/:id " do 
+        xit 'should return info about album 1' do
+
+          get_response = get('/albums_id/1')
+          expect(get_response.status).to eq 200
+          expect(get_response.body).to include("Doolittle")
+          expect(get_response.body).to include("Release year: 1989")
+          expect(get_response.body).to include("Artist: Pixies")
+        
+
+        end 
+      end 
    end
-end
-end
