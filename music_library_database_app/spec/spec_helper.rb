@@ -1,6 +1,6 @@
-require 'database_connection'
+require "database_connection"
 
-ENV['ENV'] = 'test'
+ENV["ENV"] = "test"
 
 DatabaseConnection.connect
 
